@@ -1,0 +1,7 @@
+faust==1.10.4 
+kafka-python==2.0.2 
+scikit-learn==0.24.1
+joblib==1.0.1  
+numpy==1.19.5  
+pandas==1.2.3  
+pyyaml==5.4.1 

@@ -1,0 +1,39 @@
+# Custom Faustream exclusions
+
+# Local configuration files
+config/local_config.py
+
+# Faustream virtual environment
+faustream/
+
+# General Python ignores
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Other common ignores (IDEs, operating systems, etc.) from the previous list can be added here as well
+
