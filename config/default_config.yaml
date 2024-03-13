@@ -1,7 +1,8 @@
 kafka:
   broker: localhost:9092
   topic: input_topic
-  prediction_topic: prediction_topic
+  prediction_topic: output_topic
 model:
-  path: models/example_model.pkl
-
+  path: models/best_sentiment_model-2.joblib
+data_access:
+  path: data.text

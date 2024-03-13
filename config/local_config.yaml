@@ -1,0 +1,7 @@
+kafka:
+  broker: localhost:9092
+  topic: input_topic
+  prediction_topic: prediction_topic
+model:
+  path: models/example_model.pkl
+

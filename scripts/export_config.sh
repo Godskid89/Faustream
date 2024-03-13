@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Assuming default_config.yaml is in the current directory
-CONFIG_PATH="../config/default_config.yaml"
+CONFIG_PATH="config/default_config.yaml"
 
 # Use Python to parse the YAML file and export environment variables
 export FAUSTREAM_KAFKA_BROKER=$(python -c "import yaml; print(yaml.safe_load(open('$CONFIG_FILE'))['kafka']['broker'])")

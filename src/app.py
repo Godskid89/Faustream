@@ -1,11 +1,15 @@
 import faust
-from model_management import load_model, predict
-from config import load_config
+from src import model_management
+from src import config
+from src import utils
+import logging
 
-config = load_config()
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-app = faust.App('faustream', broker=f"kafka://{config['kafka']['broker']}")
-model = load_model(config['model']['path'])
+config = config.load_config()
+
+app = faust.App('faustream', broker=f"kafka://{config['kafka']['broker']}", loglevel='info')
+model = model_management.load_model(config['model']['path'])
 
 class PredictionRequest(faust.Record, serializer='json'):
     id: str
@@ -13,13 +17,25 @@ class PredictionRequest(faust.Record, serializer='json'):
 
 class PredictionResult(faust.Record, serializer='json'):
     id: str
-    prediction: float
+    prediction: str
 
 request_topic = app.topic(config['kafka']['topic'], value_type=PredictionRequest)
+print(f"Request Topic is {request_topic}.")
 prediction_topic = app.topic(config['kafka']['prediction_topic'], value_type=PredictionResult)
+print(f"Prediction Topic is {prediction_topic}.")
 
 @app.agent(request_topic)
 async def process(stream):
     async for request in stream:
-        result = predict(request.data)
+        print(f"The request is {request}.")
+        data_access_path = config['data_access']['path']
+        text_to_predict = utils.get_data_from_path(request, data_access_path) or ''
+        result = model_management.predict(text_to_predict)
+        logging.info(f"The result is {result}")
+
+        print(f"The result is {result}.")
         await prediction_topic.send(value=PredictionResult(id=request.id, prediction=result))
+        print(f"Successfully sent prediction for request ID {request.id} to prediction topic.")
+        logging.info(f"Successfully sent prediction for request ID {request.id} to prediction topic.")
+
+
